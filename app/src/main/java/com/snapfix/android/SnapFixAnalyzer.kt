@@ -6,7 +6,7 @@ import android.content.Context
 
 class SnapFixAnalyzer(
     private val context: Context,
-    private val onResults: (List<Detection>) -> Unit  // Use our Detection data class
+    private val onResults: (List<Detection>, Int, Int) -> Unit  // Added width and height
 ) : ImageAnalysis.Analyzer {
 
     private val detector = EfficientDetDetector(context)
@@ -15,7 +15,7 @@ class SnapFixAnalyzer(
         try {
             val bitmap = image.toBitmap()
             val results = detector.detect(bitmap)
-            onResults(results)
+            onResults(results, bitmap.width, bitmap.height)
         } catch (e: Exception) {
             e.printStackTrace()
         } finally {

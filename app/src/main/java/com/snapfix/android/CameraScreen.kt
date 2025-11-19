@@ -30,7 +30,9 @@ import androidx.compose.ui.graphics.nativeCanvas
 fun CameraScreen() {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
-    var detections by remember { mutableStateOf<List<Detection>>(emptyList()) }  // ← Our local Detection class
+    var detections by remember { mutableStateOf<List<Detection>>(emptyList()) }
+    var imageWidth by remember { mutableStateOf(640f) }
+    var imageHeight by remember { mutableStateOf(480f) }
 
     val previewView = remember { PreviewView(context).apply {
         implementationMode = PreviewView.ImplementationMode.PERFORMANCE
@@ -54,7 +56,11 @@ fun CameraScreen() {
                         .also {
                             it.setAnalyzer(
                                 ContextCompat.getMainExecutor(context),
-                                SnapFixAnalyzer(context) { results -> detections = results }
+                                SnapFixAnalyzer(context) { results, width, height ->
+                                    detections = results
+                                    imageWidth = width.toFloat()
+                                    imageHeight = height.toFloat()
+                                }
                             )
                         }
                     cameraProvider.unbindAll()
@@ -69,10 +75,15 @@ fun CameraScreen() {
         Canvas(modifier = Modifier.fillMaxSize()) {
             detections.forEach { detection ->
                 val box = detection.boundingBox
-                val left = box.left * size.width / previewView.width
-                val top = box.top * size.height / previewView.height
-                val width = box.width() * size.width / previewView.width
-                val height = box.height() * size.height / previewView.height
+
+                // Scale from image coordinates to canvas coordinates
+                val scaleX = size.width / imageWidth
+                val scaleY = size.height / imageHeight
+
+                val left = box.left * scaleX
+                val top = box.top * scaleY
+                val width = box.width() * scaleX
+                val height = box.height() * scaleY
 
                 drawRect(
                     color = Color.Green,
@@ -95,7 +106,7 @@ fun CameraScreen() {
         }
 
         Text(
-            text = "SnapFix v0.2 · YOLOv11n · LIVE",
+            text = "SnapFix v0.2 · EfficientDet · LIVE",
             color = Color.White,
             modifier = Modifier.align(Alignment.BottomCenter).padding(32.dp)
         )
