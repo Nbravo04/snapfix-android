@@ -96,7 +96,58 @@ fun SplashScreen(
 @Composable
 private fun SplashScreenPreviewLight() {
     SnapFixTheme(darkTheme = false) {
-        SplashScreen(onSplashComplete = {})
+        // Static preview without animation
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color(0xFFF5F5F5)),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier.padding(32.dp)
+            ) {
+                // Placeholder for logo
+                Box(
+                    modifier = Modifier
+                        .size(200.dp)
+                        .background(Color.LightGray),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text("Logo", color = Color.Gray)
+                }
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                Text(
+                    text = "Snap",
+                    fontSize = 42.sp,
+                    fontWeight = FontWeight.Light,
+                    color = Color(0xFF1976D2),
+                    letterSpacing = 2.sp
+                )
+                Text(
+                    text = "Fix",
+                    fontSize = 42.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFFFF6F00),
+                    letterSpacing = 2.sp,
+                    modifier = Modifier.offset(y = (-8).dp)
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Text(
+                    text = "Point, Snap, Fix",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Normal,
+                    color = Color(0xFF546E7A),
+                    letterSpacing = 1.sp,
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
     }
 }
 
@@ -104,6 +155,57 @@ private fun SplashScreenPreviewLight() {
 @Composable
 private fun SplashScreenPreviewDark() {
     SnapFixTheme(darkTheme = true) {
-        SplashScreen(onSplashComplete = {})
+        // Static preview without animation - dark theme
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color(0xFF121212)),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier.padding(32.dp)
+            ) {
+                // Placeholder for logo
+                Box(
+                    modifier = Modifier
+                        .size(200.dp)
+                        .background(Color.DarkGray),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text("Logo", color = Color.Gray)
+                }
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                Text(
+                    text = "Snap",
+                    fontSize = 42.sp,
+                    fontWeight = FontWeight.Light,
+                    color = Color(0xFF90CAF9),
+                    letterSpacing = 2.sp
+                )
+                Text(
+                    text = "Fix",
+                    fontSize = 42.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFFFFB74D),
+                    letterSpacing = 2.sp,
+                    modifier = Modifier.offset(y = (-8).dp)
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Text(
+                    text = "Point, Snap, Fix",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Normal,
+                    color = Color(0xFFB0BEC5),
+                    letterSpacing = 1.sp,
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
     }
 }
