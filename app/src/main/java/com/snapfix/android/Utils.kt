@@ -4,11 +4,33 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.ImageDecoder
 import android.graphics.Paint
 import android.graphics.RectF
+import android.net.Uri
+import android.os.Build
+import android.provider.MediaStore
 import androidx.core.content.FileProvider
 import java.io.File
 import java.io.FileOutputStream
+
+/**
+ * Converts a content URI to a Bitmap
+ */
+fun Context.uriToBitmap(uri: Uri): Bitmap? {
+    return try {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            val source = ImageDecoder.createSource(contentResolver, uri)
+            ImageDecoder.decodeBitmap(source)
+        } else {
+            @Suppress("DEPRECATION")
+            MediaStore.Images.Media.getBitmap(contentResolver, uri)
+        }
+    } catch (e: Exception) {
+        e.printStackTrace()
+        null
+    }
+}
 
 /**
  * Draws bounding boxes and labels on a bitmap
