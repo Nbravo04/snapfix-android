@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
  * Navigation routes for SnapFix app
  */
 sealed class Screen(val route: String) {
+    object Splash : Screen("splash")
     object Camera : Screen("camera")
     object Result : Screen("result")
     object Advice : Screen("advice")
@@ -27,8 +28,18 @@ fun SnapFixNavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Camera.route
+        startDestination = Screen.Splash.route
     ) {
+        composable(Screen.Splash.route) {
+            SplashScreen(
+                onSplashComplete = {
+                    navController.navigate(Screen.Camera.route) {
+                        popUpTo(Screen.Splash.route) { inclusive = true }
+                    }
+                }
+            )
+        }
+
         composable(Screen.Camera.route) {
             CameraScreen(
                 onCapture = { bitmap, detections ->
