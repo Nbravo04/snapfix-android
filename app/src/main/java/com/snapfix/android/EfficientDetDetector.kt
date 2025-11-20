@@ -22,8 +22,15 @@ data class Detection(
 
 class EfficientDetDetector(private val context: Context) {
 
-    private val interpreter: Interpreter
+    private var interpreter: Interpreter? = null
     private val threshold = 0.5f  // Confidence threshold
+
+    /**
+     * Flag indicating whether the model was loaded successfully.
+     * If false, detect() will return empty results.
+     */
+    var isModelLoaded: Boolean = false
+        private set
 
     private val labels = listOf(
         "person","bicycle","car","motorcycle","airplane","bus","train","truck","boat","traffic light",
@@ -38,24 +45,43 @@ class EfficientDetDetector(private val context: Context) {
     )
 
     init {
-        Log.d(TAG, "Loading EfficientDet Lite0 model...")
-        val model = loadModelFile()
-        interpreter = Interpreter(model)
-        Log.d(TAG, "Model loaded successfully")
+        try {
+            Log.d(TAG, "Loading EfficientDet Lite0 model...")
+            val model = loadModelFile()
+            interpreter = Interpreter(model)
+            isModelLoaded = true
+            Log.d(TAG, "Model loaded successfully")
 
-        // Log all input/output tensors
-        val numInputs = interpreter.inputTensorCount
-        val numOutputs = interpreter.outputTensorCount
-        Log.d(TAG, "Number of inputs: $numInputs, outputs: $numOutputs")
+            // Log all input/output tensors
+            interpreter?.let { interp ->
+                val numInputs = interp.inputTensorCount
+                val numOutputs = interp.outputTensorCount
+                Log.d(TAG, "Number of inputs: $numInputs, outputs: $numOutputs")
 
-        for (i in 0 until numInputs) {
-            val tensor = interpreter.getInputTensor(i)
-            Log.d(TAG, "Input $i: ${tensor.shape().contentToString()}, type: ${tensor.dataType()}")
+                for (i in 0 until numInputs) {
+                    val tensor = interp.getInputTensor(i)
+                    Log.d(TAG, "Input $i: ${tensor.shape().contentToString()}, type: ${tensor.dataType()}")
+                }
+
+                for (i in 0 until numOutputs) {
+                    val tensor = interp.getOutputTensor(i)
+                    Log.d(TAG, "Output $i: ${tensor.shape().contentToString()}, type: ${tensor.dataType()}")
+                }
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to load EfficientDet model", e)
+            isModelLoaded = false
+            interpreter = null
         }
+    }
 
-        for (i in 0 until numOutputs) {
-            val tensor = interpreter.getOutputTensor(i)
-            Log.d(TAG, "Output $i: ${tensor.shape().contentToString()}, type: ${tensor.dataType()}")
+    companion object {
+        /**
+         * Check if a detector instance has its model loaded successfully.
+         * Useful for UI to show appropriate error states.
+         */
+        fun isModelAvailable(detector: EfficientDetDetector): Boolean {
+            return detector.isModelLoaded
         }
     }
 
@@ -67,6 +93,12 @@ class EfficientDetDetector(private val context: Context) {
     }
 
     fun detect(originalBitmap: Bitmap): List<Detection> {
+        // Return early if model failed to load
+        if (!isModelLoaded || interpreter == null) {
+            Log.w(TAG, "Cannot run detection: model not loaded")
+            return emptyList()
+        }
+
         Log.d(TAG, "Running inference on ${originalBitmap.width}x${originalBitmap.height}")
 
         // EfficientDet expects 320x320 input
@@ -96,7 +128,7 @@ class EfficientDetDetector(private val context: Context) {
         )
 
         try {
-            interpreter.runForMultipleInputsOutputs(arrayOf(input), outputs)
+            interpreter?.runForMultipleInputsOutputs(arrayOf(input), outputs)
             Log.d(TAG, "Inference succeeded")
         } catch (e: Exception) {
             Log.e(TAG, "Inference failed", e)
@@ -151,6 +183,6 @@ class EfficientDetDetector(private val context: Context) {
     }
 
     fun close() {
-        interpreter.close()
+        interpreter?.close()
     }
 }
