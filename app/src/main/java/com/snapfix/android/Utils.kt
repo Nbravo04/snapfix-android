@@ -21,7 +21,10 @@ fun Context.uriToBitmap(uri: Uri): Bitmap? {
     return try {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             val source = ImageDecoder.createSource(contentResolver, uri)
-            ImageDecoder.decodeBitmap(source)
+            ImageDecoder.decodeBitmap(source) { decoder, _, _ ->
+                decoder.setMutableRequired(true)
+                decoder.allocator = ImageDecoder.ALLOCATOR_SOFTWARE
+            }
         } else {
             @Suppress("DEPRECATION")
             MediaStore.Images.Media.getBitmap(contentResolver, uri)
