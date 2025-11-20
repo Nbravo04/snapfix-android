@@ -199,13 +199,13 @@ fun CameraScreen(
                             }
                         }
                     },
-                    enabled = !isCapturing,
+                    enabled = !isCapturing && detections.isNotEmpty(),
                     modifier = Modifier
                         .size(80.dp)
                         .border(4.dp, Color.White, CircleShape),
                     colors = IconButtonDefaults.filledIconButtonColors(
                         containerColor = MaterialTheme.colorScheme.primary,
-                        disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
+                        disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
                     )
                 ) {
                     if (isCapturing) {
@@ -227,9 +227,9 @@ fun CameraScreen(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    text = "SNAP",
+                    text = if (detections.isEmpty()) "Point at object" else "SNAP",
                     style = MaterialTheme.typography.titleMedium,
-                    color = Color.White
+                    color = if (detections.isEmpty()) Color.White.copy(alpha = 0.5f) else Color.White
                 )
             }
         }
