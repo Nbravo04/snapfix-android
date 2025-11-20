@@ -108,15 +108,12 @@ private fun SplashScreenPreviewLight() {
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier.padding(32.dp)
             ) {
-                // Placeholder for logo
-                Box(
-                    modifier = Modifier
-                        .size(200.dp)
-                        .background(Color.LightGray),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text("Logo", color = Color.Gray)
-                }
+                // Logo
+                Image(
+                    painter = painterResource(id = R.drawable.snapfix_logo),
+                    contentDescription = "SnapFix Logo",
+                    modifier = Modifier.size(200.dp)
+                )
 
                 Spacer(modifier = Modifier.height(24.dp))
 
@@ -167,15 +164,12 @@ private fun SplashScreenPreviewDark() {
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier.padding(32.dp)
             ) {
-                // Placeholder for logo
-                Box(
-                    modifier = Modifier
-                        .size(200.dp)
-                        .background(Color.DarkGray),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text("Logo", color = Color.Gray)
-                }
+                // Logo
+                Image(
+                    painter = painterResource(id = R.drawable.snapfix_logo),
+                    contentDescription = "SnapFix Logo",
+                    modifier = Modifier.size(200.dp)
+                )
 
                 Spacer(modifier = Modifier.height(24.dp))
 
