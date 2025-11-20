@@ -16,7 +16,10 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import android.graphics.RectF
+import com.snapfix.android.ui.theme.SnapFixTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -310,5 +313,114 @@ fun getIconForDetection(iconName: String): androidx.compose.ui.graphics.vector.I
         "cruelty_free" -> Icons.Default.CrueltyFree
         "bathroom" -> Icons.Default.Bathroom
         else -> Icons.Default.Build
+    }
+}
+
+// Sample detections for previews
+private val sampleDetections = listOf(
+    Detection(RectF(0f, 0f, 100f, 100f), "laptop", 0.95f),
+    Detection(RectF(0f, 0f, 100f, 100f), "chair", 0.72f),
+    Detection(RectF(0f, 0f, 100f, 100f), "bottle", 0.45f)
+)
+
+@Preview(name = "High Confidence - Light", showBackground = true)
+@Composable
+private fun DetectionCardHighConfidenceLight() {
+    SnapFixTheme(darkTheme = false) {
+        DetectionCard(detection = Detection(RectF(0f, 0f, 100f, 100f), "laptop", 0.95f))
+    }
+}
+
+@Preview(name = "High Confidence - Dark", showBackground = true)
+@Composable
+private fun DetectionCardHighConfidenceDark() {
+    SnapFixTheme(darkTheme = true) {
+        DetectionCard(detection = Detection(RectF(0f, 0f, 100f, 100f), "laptop", 0.95f))
+    }
+}
+
+@Preview(name = "Medium Confidence - Light", showBackground = true)
+@Composable
+private fun DetectionCardMediumConfidenceLight() {
+    SnapFixTheme(darkTheme = false) {
+        DetectionCard(detection = Detection(RectF(0f, 0f, 100f, 100f), "chair", 0.72f))
+    }
+}
+
+@Preview(name = "Medium Confidence - Dark", showBackground = true)
+@Composable
+private fun DetectionCardMediumConfidenceDark() {
+    SnapFixTheme(darkTheme = true) {
+        DetectionCard(detection = Detection(RectF(0f, 0f, 100f, 100f), "chair", 0.72f))
+    }
+}
+
+@Preview(name = "Low Confidence - Light", showBackground = true)
+@Composable
+private fun DetectionCardLowConfidenceLight() {
+    SnapFixTheme(darkTheme = false) {
+        DetectionCard(detection = Detection(RectF(0f, 0f, 100f, 100f), "bottle", 0.45f))
+    }
+}
+
+@Preview(name = "Low Confidence - Dark", showBackground = true)
+@Composable
+private fun DetectionCardLowConfidenceDark() {
+    SnapFixTheme(darkTheme = true) {
+        DetectionCard(detection = Detection(RectF(0f, 0f, 100f, 100f), "bottle", 0.45f))
+    }
+}
+
+@Preview(name = "Result Screen - Light", showBackground = true)
+@Composable
+private fun ResultScreenPreviewLight() {
+    SnapFixTheme(darkTheme = false) {
+        // Preview showing detection list only (without bitmap dependency)
+        LazyColumn {
+            item {
+                Surface(
+                    modifier = Modifier.fillMaxWidth(),
+                    color = MaterialTheme.colorScheme.primaryContainer
+                ) {
+                    Text(
+                        text = "3 Detections Found",
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        modifier = Modifier.padding(16.dp)
+                    )
+                }
+            }
+            items(sampleDetections) { detection ->
+                DetectionCard(detection = detection)
+            }
+        }
+    }
+}
+
+@Preview(name = "Result Screen - Dark", showBackground = true)
+@Composable
+private fun ResultScreenPreviewDark() {
+    SnapFixTheme(darkTheme = true) {
+        // Preview showing detection list only (without bitmap dependency)
+        LazyColumn {
+            item {
+                Surface(
+                    modifier = Modifier.fillMaxWidth(),
+                    color = MaterialTheme.colorScheme.primaryContainer
+                ) {
+                    Text(
+                        text = "3 Detections Found",
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        modifier = Modifier.padding(16.dp)
+                    )
+                }
+            }
+            items(sampleDetections) { detection ->
+                DetectionCard(detection = detection)
+            }
+        }
     }
 }

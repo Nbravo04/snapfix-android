@@ -17,6 +17,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.tooling.preview.Preview
+import com.snapfix.android.ui.theme.SnapFixTheme
 import kotlinx.coroutines.delay
 
 @Composable
@@ -87,5 +89,21 @@ fun SplashScreen(
                 textAlign = TextAlign.Center
             )
         }
+    }
+}
+
+@Preview(name = "Light Mode", showBackground = true)
+@Composable
+private fun SplashScreenPreviewLight() {
+    SnapFixTheme(darkTheme = false) {
+        SplashScreen(onSplashComplete = {})
+    }
+}
+
+@Preview(name = "Dark Mode", showBackground = true)
+@Composable
+private fun SplashScreenPreviewDark() {
+    SnapFixTheme(darkTheme = true) {
+        SplashScreen(onSplashComplete = {})
     }
 }
