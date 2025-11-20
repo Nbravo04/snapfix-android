@@ -16,7 +16,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import android.graphics.RectF
+import com.snapfix.android.ui.theme.SnapFixTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -464,4 +467,154 @@ fun generateAdvice(detections: List<Detection>): List<RepairAdvice> {
     }
 
     return adviceList
+}
+
+// Sample data for previews
+private val sampleAdviceDetections = listOf(
+    Detection(RectF(0f, 0f, 100f, 100f), "laptop", 0.92f),
+    Detection(RectF(0f, 0f, 100f, 100f), "chair", 0.85f),
+    Detection(RectF(0f, 0f, 100f, 100f), "refrigerator", 0.78f)
+)
+
+private val sampleAdvice = RepairAdvice(
+    title = "Electronics Care & Troubleshooting",
+    description = "Proper care of electronic devices prevents overheating, extends lifespan, and maintains optimal performance.",
+    steps = listOf(
+        "Clean air vents monthly with compressed air to prevent dust buildup",
+        "Check all cable connections - reseat loose cables",
+        "Use surge protector to protect against power fluctuations",
+        "Keep devices in well-ventilated areas, away from heat sources"
+    )
+)
+
+@Preview(name = "Advice Card - Light", showBackground = true)
+@Composable
+private fun AdviceCardPreviewLight() {
+    SnapFixTheme(darkTheme = false) {
+        AdviceCard(advice = sampleAdvice)
+    }
+}
+
+@Preview(name = "Advice Card - Dark", showBackground = true)
+@Composable
+private fun AdviceCardPreviewDark() {
+    SnapFixTheme(darkTheme = true) {
+        AdviceCard(advice = sampleAdvice)
+    }
+}
+
+@Preview(name = "Advice Screen - Light", showBackground = true)
+@Composable
+private fun AdviceScreenPreviewLight() {
+    SnapFixTheme(darkTheme = false) {
+        val adviceList = generateAdvice(sampleAdviceDetections)
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            // Object selector preview
+            item {
+                Card(
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.primaryContainer
+                    )
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(
+                                imageVector = Icons.Default.CheckCircle,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.size(24.dp)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = "Select Object for Advice",
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onPrimaryContainer
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(12.dp))
+                        sampleAdviceDetections.forEachIndexed { index, detection ->
+                            FilterChip(
+                                selected = index == 0,
+                                onClick = { },
+                                label = {
+                                    Text(detection.label.replaceFirstChar { it.uppercase() })
+                                },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 4.dp)
+                            )
+                        }
+                    }
+                }
+            }
+            // Advice cards
+            items(adviceList) { advice ->
+                AdviceCard(advice = advice)
+            }
+        }
+    }
+}
+
+@Preview(name = "Advice Screen - Dark", showBackground = true)
+@Composable
+private fun AdviceScreenPreviewDark() {
+    SnapFixTheme(darkTheme = true) {
+        val adviceList = generateAdvice(sampleAdviceDetections)
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            // Object selector preview
+            item {
+                Card(
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.primaryContainer
+                    )
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(
+                                imageVector = Icons.Default.CheckCircle,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.size(24.dp)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = "Select Object for Advice",
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onPrimaryContainer
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(12.dp))
+                        sampleAdviceDetections.forEachIndexed { index, detection ->
+                            FilterChip(
+                                selected = index == 0,
+                                onClick = { },
+                                label = {
+                                    Text(detection.label.replaceFirstChar { it.uppercase() })
+                                },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 4.dp)
+                            )
+                        }
+                    }
+                }
+            }
+            // Advice cards
+            items(adviceList) { advice ->
+                AdviceCard(advice = advice)
+            }
+        }
+    }
 }

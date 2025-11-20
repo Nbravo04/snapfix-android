@@ -17,6 +17,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.tooling.preview.Preview
+import com.snapfix.android.ui.theme.SnapFixTheme
 import kotlinx.coroutines.delay
 
 @Composable
@@ -86,6 +88,118 @@ fun SplashScreen(
                 letterSpacing = 1.sp,
                 textAlign = TextAlign.Center
             )
+        }
+    }
+}
+
+@Preview(name = "Light Mode", showBackground = true)
+@Composable
+private fun SplashScreenPreviewLight() {
+    SnapFixTheme(darkTheme = false) {
+        // Static preview without animation
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color(0xFFF5F5F5)),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier.padding(32.dp)
+            ) {
+                // Logo
+                Image(
+                    painter = painterResource(id = R.drawable.snapfix_logo),
+                    contentDescription = "SnapFix Logo",
+                    modifier = Modifier.size(200.dp)
+                )
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                Text(
+                    text = "Snap",
+                    fontSize = 42.sp,
+                    fontWeight = FontWeight.Light,
+                    color = Color(0xFF1976D2),
+                    letterSpacing = 2.sp
+                )
+                Text(
+                    text = "Fix",
+                    fontSize = 42.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFFFF6F00),
+                    letterSpacing = 2.sp,
+                    modifier = Modifier.offset(y = (-8).dp)
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Text(
+                    text = "Point, Snap, Fix",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Normal,
+                    color = Color(0xFF546E7A),
+                    letterSpacing = 1.sp,
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
+    }
+}
+
+@Preview(name = "Dark Mode", showBackground = true)
+@Composable
+private fun SplashScreenPreviewDark() {
+    SnapFixTheme(darkTheme = true) {
+        // Static preview without animation - dark theme
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color(0xFF121212)),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier.padding(32.dp)
+            ) {
+                // Logo
+                Image(
+                    painter = painterResource(id = R.drawable.snapfix_logo),
+                    contentDescription = "SnapFix Logo",
+                    modifier = Modifier.size(200.dp)
+                )
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                Text(
+                    text = "Snap",
+                    fontSize = 42.sp,
+                    fontWeight = FontWeight.Light,
+                    color = Color(0xFF90CAF9),
+                    letterSpacing = 2.sp
+                )
+                Text(
+                    text = "Fix",
+                    fontSize = 42.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFFFFB74D),
+                    letterSpacing = 2.sp,
+                    modifier = Modifier.offset(y = (-8).dp)
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Text(
+                    text = "Point, Snap, Fix",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Normal,
+                    color = Color(0xFFB0BEC5),
+                    letterSpacing = 1.sp,
+                    textAlign = TextAlign.Center
+                )
+            }
         }
     }
 }
