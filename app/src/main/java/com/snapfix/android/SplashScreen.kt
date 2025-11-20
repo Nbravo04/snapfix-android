@@ -79,7 +79,7 @@ fun SplashScreen(
 
             // Tagline
             Text(
-                text = "Home Repair Made Simple",
+                text = "Point, Snap, Fix",
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Normal,
                 color = Color(0xFF546E7A),
