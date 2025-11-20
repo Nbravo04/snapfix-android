@@ -51,9 +51,9 @@ fun SplashScreen(
         ) {
             // Logo
             Image(
-                painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                painter = painterResource(id = R.drawable.snapfix_logo),
                 contentDescription = "SnapFix Logo",
-                modifier = Modifier.size(180.dp)
+                modifier = Modifier.size(200.dp)
             )
 
             Spacer(modifier = Modifier.height(24.dp))
