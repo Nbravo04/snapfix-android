@@ -242,9 +242,26 @@ private suspend fun ImageCapture.takePicture(executor: java.util.concurrent.Exec
     return kotlinx.coroutines.suspendCancellableCoroutine { continuation ->
         takePicture(executor, object : ImageCapture.OnImageCapturedCallback() {
             override fun onCaptureSuccess(image: androidx.camera.core.ImageProxy) {
-                val bitmap = image.toBitmap()
+                val rotationDegrees = image.imageInfo.rotationDegrees
+
+                // Convert ImageProxy to Bitmap (handles JPEG format from ImageCapture)
+                val buffer = image.planes[0].buffer
+                val bytes = ByteArray(buffer.remaining())
+                buffer.get(bytes)
+                val bitmap = android.graphics.BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+
+                // Apply rotation based on image metadata
+                val rotatedBitmap = if (rotationDegrees != 0) {
+                    val matrix = android.graphics.Matrix().apply {
+                        postRotate(rotationDegrees.toFloat())
+                    }
+                    Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+                } else {
+                    bitmap
+                }
+
                 image.close()
-                continuation.resume(bitmap, null)
+                continuation.resume(rotatedBitmap, null)
             }
 
             override fun onError(exception: androidx.camera.core.ImageCaptureException) {
