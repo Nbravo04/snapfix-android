@@ -34,6 +34,7 @@ import androidx.compose.ui.graphics.nativeCanvas
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.coroutines.resumeWithException
 
 @Composable
 fun CameraScreen(
