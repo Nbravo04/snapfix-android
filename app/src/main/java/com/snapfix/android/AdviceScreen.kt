@@ -28,29 +28,37 @@ fun AdviceScreen(
     val capturedData by viewModel.capturedData.collectAsState()
 
     capturedData?.let { data ->
-        // Get top 3 detections by confidence
+        // Get top detections by confidence
         val topDetections = remember(data) {
             data.detections
                 .sortedByDescending { it.score }
-                .take(3)
+                .take(5)
         }
 
-        // Generate professional advice
-        val adviceList = remember(topDetections) {
-            generateAdvice(topDetections)
+        // State for selected detection index
+        var selectedIndex by remember { mutableStateOf(0) }
+
+        // Get selected detection
+        val selectedDetection = remember(topDetections, selectedIndex) {
+            topDetections.getOrNull(selectedIndex)
+        }
+
+        // Generate professional advice for selected detection only
+        val adviceList = remember(selectedDetection) {
+            selectedDetection?.let { generateAdvice(listOf(it)) } ?: emptyList()
         }
 
         // Generate full text for sharing/copying
-        val fullAdviceText = remember(adviceList, topDetections) {
+        val fullAdviceText = remember(adviceList, selectedDetection) {
             buildString {
                 appendLine("🔧 SNAPFIX REPAIR ADVICE")
                 appendLine("━━━━━━━━━━━━━━━━━━━━")
                 appendLine()
-                appendLine("DETECTED ITEMS:")
-                topDetections.forEachIndexed { index, detection ->
-                    appendLine("${index + 1}. ${detection.label.replaceFirstChar { it.uppercase() }} (${(detection.score * 100).toInt()}% confidence)")
+                selectedDetection?.let { detection ->
+                    appendLine("SELECTED ITEM:")
+                    appendLine("${detection.label.replaceFirstChar { it.uppercase() }} (${(detection.score * 100).toInt()}% confidence)")
+                    appendLine()
                 }
-                appendLine()
                 appendLine("PROFESSIONAL RECOMMENDATIONS:")
                 adviceList.forEachIndexed { index, advice ->
                     appendLine()
@@ -110,7 +118,7 @@ fun AdviceScreen(
                     .padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                // Header card with detected items
+                // Object selector chips
                 item {
                     Card(
                         colors = CardDefaults.cardColors(
@@ -127,42 +135,59 @@ fun AdviceScreen(
                                 )
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
-                                    text = "Top ${topDetections.size} Detection${if (topDetections.size != 1) "s" else ""}",
+                                    text = "Select Object for Advice",
                                     style = MaterialTheme.typography.titleMedium,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.onPrimaryContainer
                                 )
                             }
 
-                            Spacer(modifier = Modifier.height(8.dp))
+                            Spacer(modifier = Modifier.height(12.dp))
 
+                            // Selector chips for each detection
                             topDetections.forEachIndexed { index, detection ->
-                                Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.SpaceBetween,
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    Text(
-                                        text = "${index + 1}. ${detection.label.replaceFirstChar { it.uppercase() }}",
-                                        style = MaterialTheme.typography.bodyLarge,
-                                        color = MaterialTheme.colorScheme.onPrimaryContainer
-                                    )
-                                    Surface(
-                                        color = MaterialTheme.colorScheme.primary,
-                                        shape = MaterialTheme.shapes.small
-                                    ) {
+                                FilterChip(
+                                    selected = selectedIndex == index,
+                                    onClick = { selectedIndex = index },
+                                    label = {
                                         Text(
-                                            text = "${(detection.score * 100).toInt()}%",
-                                            style = MaterialTheme.typography.labelMedium,
-                                            fontWeight = FontWeight.Bold,
-                                            color = MaterialTheme.colorScheme.onPrimary,
-                                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                                            text = detection.label.replaceFirstChar { it.uppercase() },
+                                            style = MaterialTheme.typography.bodyMedium
                                         )
-                                    }
-                                }
-                                if (index < topDetections.size - 1) {
-                                    Spacer(modifier = Modifier.height(4.dp))
-                                }
+                                    },
+                                    leadingIcon = if (selectedIndex == index) {
+                                        {
+                                            Icon(
+                                                imageVector = Icons.Default.Check,
+                                                contentDescription = null,
+                                                modifier = Modifier.size(18.dp)
+                                            )
+                                        }
+                                    } else null,
+                                    trailingIcon = {
+                                        Surface(
+                                            color = if (selectedIndex == index)
+                                                MaterialTheme.colorScheme.primary
+                                            else
+                                                MaterialTheme.colorScheme.outline,
+                                            shape = MaterialTheme.shapes.small
+                                        ) {
+                                            Text(
+                                                text = "${(detection.score * 100).toInt()}%",
+                                                style = MaterialTheme.typography.labelSmall,
+                                                fontWeight = FontWeight.Bold,
+                                                color = if (selectedIndex == index)
+                                                    MaterialTheme.colorScheme.onPrimary
+                                                else
+                                                    MaterialTheme.colorScheme.surface,
+                                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                                            )
+                                        }
+                                    },
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 4.dp)
+                                )
                             }
                         }
                     }
