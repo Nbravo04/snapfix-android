@@ -71,7 +71,7 @@ Built with modern Android development practices, SpotFix combines **CameraX**, *
 spotfix-android/
 ├── app/
 │   ├── src/main/
-│   │   ├── java/com/yourpackage/spotfix/
+│   │   ├── java/com/spotfix/android/
 │   │   │   ├── ui/
 │   │   │   │   ├── screen/
 │   │   │   │   │   ├── CameraScreen.kt          # Main camera interface
