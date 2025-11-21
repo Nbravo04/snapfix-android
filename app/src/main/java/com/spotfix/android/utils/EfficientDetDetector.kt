@@ -72,6 +72,29 @@ class EfficientDetDetector(private val context: Context) {
 
     companion object {
         /**
+         * Whitelist of home-repair relevant COCO classes.
+         * Only detections with labels in this set will be returned.
+         */
+        val allowedLabels = setOf(
+            // People
+            "person",
+            // Furniture
+            "chair", "couch", "bed", "dining table", "bench",
+            // Kitchen appliances
+            "refrigerator", "microwave", "oven", "toaster", "sink",
+            // Bathroom fixtures
+            "toilet",
+            // Electronics
+            "tv", "laptop", "keyboard", "mouse", "remote", "cell phone",
+            // Kitchen items
+            "bottle", "wine glass", "cup", "bowl", "fork", "knife", "spoon",
+            // Household objects
+            "clock", "vase", "scissors", "book", "potted plant",
+            "backpack", "umbrella", "suitcase", "handbag", "tie",
+            "hair drier", "toothbrush"
+        )
+
+        /**
          * Check if a detector instance has its model loaded successfully.
          * Useful for UI to show appropriate error states.
          */
@@ -173,8 +196,19 @@ class EfficientDetDetector(private val context: Context) {
             }
         }
 
-        Log.d(TAG, "Found ${detections.size} valid detections")
-        return detections
+        Log.d(TAG, "Found ${detections.size} valid detections before filtering")
+
+        // Filter to only home-repair relevant objects
+        val filteredDetections = detections.filter { detection ->
+            val isAllowed = detection.label in allowedLabels
+            if (!isAllowed) {
+                Log.d(TAG, "Filtered out: ${detection.label} (${(detection.score * 100).toInt()}%) - not home-repair relevant")
+            }
+            isAllowed
+        }
+
+        Log.d(TAG, "Returning ${filteredDetections.size} home-repair relevant detections")
+        return filteredDetections
     }
 
     fun close() {
