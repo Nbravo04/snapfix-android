@@ -1,4 +1,4 @@
-package com.snapfix.android
+package com.spotfix.android
 
 import android.graphics.Bitmap
 import androidx.compose.foundation.Image
@@ -19,7 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import android.graphics.RectF
-import com.snapfix.android.ui.theme.SnapFixTheme
+import com.spotfix.android.ui.theme.SpotFixTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -52,7 +52,7 @@ fun ResultScreen(
                     },
                     actions = {
                         IconButton(onClick = {
-                            context.shareBitmap(annotatedBitmap, "Share SnapFix Result")
+                            context.shareBitmap(annotatedBitmap, "Share SpotFix Result")
                         }) {
                             Icon(Icons.Default.Share, "Share")
                         }
@@ -326,7 +326,7 @@ private val sampleDetections = listOf(
 @Preview(name = "High Confidence - Light", showBackground = true)
 @Composable
 private fun DetectionCardHighConfidenceLight() {
-    SnapFixTheme(darkTheme = false) {
+    SpotFixTheme(darkTheme = false) {
         DetectionCard(detection = Detection(RectF(0f, 0f, 100f, 100f), "laptop", 0.95f))
     }
 }
@@ -334,7 +334,7 @@ private fun DetectionCardHighConfidenceLight() {
 @Preview(name = "High Confidence - Dark", showBackground = true)
 @Composable
 private fun DetectionCardHighConfidenceDark() {
-    SnapFixTheme(darkTheme = true) {
+    SpotFixTheme(darkTheme = true) {
         DetectionCard(detection = Detection(RectF(0f, 0f, 100f, 100f), "laptop", 0.95f))
     }
 }
@@ -342,7 +342,7 @@ private fun DetectionCardHighConfidenceDark() {
 @Preview(name = "Medium Confidence - Light", showBackground = true)
 @Composable
 private fun DetectionCardMediumConfidenceLight() {
-    SnapFixTheme(darkTheme = false) {
+    SpotFixTheme(darkTheme = false) {
         DetectionCard(detection = Detection(RectF(0f, 0f, 100f, 100f), "chair", 0.72f))
     }
 }
@@ -350,7 +350,7 @@ private fun DetectionCardMediumConfidenceLight() {
 @Preview(name = "Medium Confidence - Dark", showBackground = true)
 @Composable
 private fun DetectionCardMediumConfidenceDark() {
-    SnapFixTheme(darkTheme = true) {
+    SpotFixTheme(darkTheme = true) {
         DetectionCard(detection = Detection(RectF(0f, 0f, 100f, 100f), "chair", 0.72f))
     }
 }
@@ -358,7 +358,7 @@ private fun DetectionCardMediumConfidenceDark() {
 @Preview(name = "Low Confidence - Light", showBackground = true)
 @Composable
 private fun DetectionCardLowConfidenceLight() {
-    SnapFixTheme(darkTheme = false) {
+    SpotFixTheme(darkTheme = false) {
         DetectionCard(detection = Detection(RectF(0f, 0f, 100f, 100f), "bottle", 0.45f))
     }
 }
@@ -366,7 +366,7 @@ private fun DetectionCardLowConfidenceLight() {
 @Preview(name = "Low Confidence - Dark", showBackground = true)
 @Composable
 private fun DetectionCardLowConfidenceDark() {
-    SnapFixTheme(darkTheme = true) {
+    SpotFixTheme(darkTheme = true) {
         DetectionCard(detection = Detection(RectF(0f, 0f, 100f, 100f), "bottle", 0.45f))
     }
 }
@@ -374,7 +374,7 @@ private fun DetectionCardLowConfidenceDark() {
 @Preview(name = "Result Screen - Light", showBackground = true)
 @Composable
 private fun ResultScreenPreviewLight() {
-    SnapFixTheme(darkTheme = false) {
+    SpotFixTheme(darkTheme = false) {
         // Preview showing detection list only (without bitmap dependency)
         LazyColumn {
             item {
@@ -401,7 +401,7 @@ private fun ResultScreenPreviewLight() {
 @Preview(name = "Result Screen - Dark", showBackground = true)
 @Composable
 private fun ResultScreenPreviewDark() {
-    SnapFixTheme(darkTheme = true) {
+    SpotFixTheme(darkTheme = true) {
         // Preview showing detection list only (without bitmap dependency)
         LazyColumn {
             item {

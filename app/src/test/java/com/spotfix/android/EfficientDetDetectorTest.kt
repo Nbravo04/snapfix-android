@@ -1,4 +1,4 @@
-package com.snapfix.android
+package com.spotfix.android
 
 import android.content.Context
 import android.content.res.AssetFileDescriptor

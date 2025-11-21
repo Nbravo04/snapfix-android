@@ -1,16 +1,16 @@
-package com.snapfix.android
+package com.spotfix.android
 
 import android.graphics.RectF
 import org.junit.Assert.*
 import org.junit.Test
 
 /**
- * Unit tests for SnapFixAnalyzer logic
+ * Unit tests for SpotFixAnalyzer logic
  *
  * Note: Full ImageProxy and camera analysis require instrumentation tests.
  * These tests verify the callback and data flow logic.
  */
-class SnapFixAnalyzerTest {
+class SpotFixAnalyzerTest {
 
     // ==================== Callback Logic Tests ====================
 

@@ -1,4 +1,4 @@
-package com.snapfix.android.ui.theme
+package com.spotfix.android.ui.theme
 
 import android.app.Activity
 import android.os.Build
@@ -24,7 +24,7 @@ private val LightColorScheme = lightColorScheme(
 )
 
 @Composable
-fun SnapFixTheme(
+fun SpotFixTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Use consistent brand colors (disable dynamic color)
     dynamicColor: Boolean = false,

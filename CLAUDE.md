@@ -1,8 +1,8 @@
-# CLAUDE.md - SnapFix Android
+# CLAUDE.md - SpotFix Android
 
 ## Project Overview
 
-SnapFix is an AI-powered home-repair diagnostic camera app for Android. Users point their camera at household items to receive real-time object detection and context-aware repair advice. All ML inference runs on-device using TensorFlow Lite.
+SpotFix is an AI-powered home-repair diagnostic camera app for Android. Users point their camera at household items to receive real-time object detection and context-aware repair advice. All ML inference runs on-device using TensorFlow Lite.
 
 **Key Features:**
 - Real-time object detection (90+ COCO classes)
@@ -39,7 +39,7 @@ Navigation.kt (NavHost)
     └── AdviceScreen.kt ─────┘
                                     │
                               EfficientDetDetector (TFLite)
-                              SnapFixAnalyzer (CameraX)
+                              SpotFixAnalyzer (CameraX)
 ```
 
 **State Flow:** User Action → Screen Composable → ViewModel Update → StateFlow Emission → UI Recomposition
@@ -47,7 +47,7 @@ Navigation.kt (NavHost)
 ## Project Structure
 
 ```
-app/src/main/java/com/snapfix/android/
+app/src/main/java/com/spotfix/android/
 ├── MainActivity.kt              # Activity entry point
 ├── Navigation.kt                # Navigation routes (sealed class Screen)
 ├── SharedViewModel.kt           # Cross-screen state management
@@ -56,7 +56,7 @@ app/src/main/java/com/snapfix/android/
 ├── AdviceScreen.kt              # Repair advice UI
 ├── SplashScreen.kt              # Splash animation
 ├── EfficientDetDetector.kt      # TFLite model wrapper
-├── SnapFixAnalyzer.kt           # ImageAnalysis.Analyzer
+├── SpotFixAnalyzer.kt           # ImageAnalysis.Analyzer
 ├── Utils.kt                     # Detection info mapping
 ├── BitmapExtensions.kt          # Image conversion helpers
 └── ui/theme/                    # Material3 theming
@@ -64,7 +64,7 @@ app/src/main/java/com/snapfix/android/
 
 **Key Resources:**
 - `assets/efficientdet_lite0.tflite` - Primary ML model (4.5 MB)
-- `res/drawable/snapfix_logo.png` - App logo
+- `res/drawable/spotfix_logo.png` - App logo
 - `res/mipmap-*/` - Launcher icons (multiple densities)
 
 ## Tech Stack
@@ -86,7 +86,7 @@ app/src/main/java/com/snapfix/android/
 - **Target SDK:** 36 (Android 15)
 - **Compile SDK:** 36
 - **JVM Target:** Java 11
-- **Package:** `com.snapfix.android`
+- **Package:** `com.spotfix.android`
 
 ## Code Conventions
 
@@ -134,7 +134,7 @@ fun Bitmap.drawDetections(detections: List<Detection>): Bitmap
 
 ## Testing
 
-**Test Location:** `app/src/test/java/com/snapfix/android/`
+**Test Location:** `app/src/test/java/com/spotfix/android/`
 
 **Run Tests:**
 ```bash
@@ -146,7 +146,7 @@ fun Bitmap.drawDetections(detections: List<Detection>): Bitmap
 **Test Files:**
 - `EfficientDetDetectorTest.kt` - Detection validation
 - `SharedViewModelTest.kt` - StateFlow testing
-- `SnapFixAnalyzerTest.kt` - Image analysis
+- `SpotFixAnalyzerTest.kt` - Image analysis
 - `UtilsTest.kt` - Utility functions
 - `BitmapExtensionsTest.kt` - Image conversions
 - `AdviceGenerationTest.kt` - Advice logic
@@ -169,7 +169,7 @@ fun `example test with descriptive name`() = runTest {
 - Inference: ~50-100ms on modern devices
 
 **Detection Pipeline:**
-1. CameraX captures frame → `SnapFixAnalyzer`
+1. CameraX captures frame → `SpotFixAnalyzer`
 2. Convert ImageProxy to Bitmap
 3. Resize to 320x320, normalize
 4. Run TFLite inference
@@ -186,7 +186,7 @@ fun `example test with descriptive name`() = runTest {
 
 ### Modifying Detection Logic
 - Detection filtering: `EfficientDetDetector.kt`
-- Camera analysis: `SnapFixAnalyzer.kt`
+- Camera analysis: `SpotFixAnalyzer.kt`
 - Coordinate mapping: `Utils.kt`
 
 ### Updating Theme
@@ -218,7 +218,7 @@ dependencies {
 - `READ_EXTERNAL_STORAGE` - Pre-Android 13 gallery
 
 ### Resource Management
-- Always call `image.close()` in `SnapFixAnalyzer`
+- Always call `image.close()` in `SpotFixAnalyzer`
 - Call `interpreter?.close()` when done with detector
 - Use `withContext(Dispatchers.IO)` for file operations
 

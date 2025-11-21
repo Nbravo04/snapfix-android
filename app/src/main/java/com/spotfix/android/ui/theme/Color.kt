@@ -1,8 +1,8 @@
-package com.snapfix.android.ui.theme
+package com.spotfix.android.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-// Blue/Orange theme for SnapFix
+// Blue/Orange theme for SpotFix
 val Blue80 = Color(0xFF82B1FF)       // Light blue for dark theme
 val BlueGrey80 = Color(0xFFB0BEC5)   // Blue grey for dark theme
 val Orange80 = Color(0xFFFFAB91)     // Light orange for dark theme

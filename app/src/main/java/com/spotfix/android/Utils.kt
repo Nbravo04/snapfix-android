@@ -1,4 +1,4 @@
-package com.snapfix.android
+package com.spotfix.android
 
 import android.content.Context
 import android.content.Intent
@@ -99,11 +99,11 @@ fun Bitmap.drawDetections(detections: List<Detection>): Bitmap {
 /**
  * Shares a bitmap image
  */
-fun Context.shareBitmap(bitmap: Bitmap, title: String = "Share SnapFix Result") {
+fun Context.shareBitmap(bitmap: Bitmap, title: String = "Share SpotFix Result") {
     try {
         val cachePath = File(cacheDir, "images")
         cachePath.mkdirs()
-        val file = File(cachePath, "snapfix_result_${System.currentTimeMillis()}.png")
+        val file = File(cachePath, "spotfix_result_${System.currentTimeMillis()}.png")
 
         FileOutputStream(file).use { out ->
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)

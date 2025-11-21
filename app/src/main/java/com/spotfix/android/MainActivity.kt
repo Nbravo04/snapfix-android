@@ -1,4 +1,4 @@
-package com.snapfix.android
+package com.spotfix.android
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -8,19 +8,19 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
-import com.snapfix.android.ui.theme.SnapFixTheme
+import com.spotfix.android.ui.theme.SpotFixTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            SnapFixTheme {
+            SpotFixTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val navController = rememberNavController()
-                    SnapFixNavHost(navController = navController)
+                    SpotFixNavHost(navController = navController)
                 }
             }
         }

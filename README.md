@@ -1,4 +1,4 @@
-# SnapFix
+# SpotFix
 
 <p align="center">
   <img src="https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Android">
@@ -9,9 +9,9 @@
 
 ## 🏠 Overview
 
-**SnapFix** is an AI-powered home-repair diagnostic camera application for Android that leverages real-time object detection to help homeowners identify and troubleshoot household items and potential repair issues. Simply point your camera at appliances, plumbing fixtures, or other home items, and SnapFix will instantly detect and classify them, providing helpful context and repair advice.
+**SpotFix** is an AI-powered home-repair diagnostic camera application for Android that leverages real-time object detection to help homeowners identify and troubleshoot household items and potential repair issues. Simply point your camera at appliances, plumbing fixtures, or other home items, and SpotFix will instantly detect and classify them, providing helpful context and repair advice.
 
-Built with modern Android development practices, SnapFix combines **CameraX**, **Jetpack Compose**, and **TensorFlow Lite** to deliver a seamless, production-ready experience with on-device machine learning.
+Built with modern Android development practices, SpotFix combines **CameraX**, **Jetpack Compose**, and **TensorFlow Lite** to deliver a seamless, production-ready experience with on-device machine learning.
 
 ## ✨ Key Features
 
@@ -68,10 +68,10 @@ Built with modern Android development practices, SnapFix combines **CameraX**, *
 ## 📁 Project Structure
 
 ```
-snapfix-android/
+spotfix-android/
 ├── app/
 │   ├── src/main/
-│   │   ├── java/com/yourpackage/snapfix/
+│   │   ├── java/com/yourpackage/spotfix/
 │   │   │   ├── ui/
 │   │   │   │   ├── screen/
 │   │   │   │   │   ├── CameraScreen.kt          # Main camera interface
@@ -108,8 +108,8 @@ snapfix-android/
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/Nbravo04/snapfix-android.git
-   cd snapfix-android
+   git clone https://github.com/Nbravo04/spotfix-android.git
+   cd spotfix-android
    ```
 
 2. **Open in Android Studio**

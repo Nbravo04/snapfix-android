@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "SnapFix"
+rootProject.name = "SpotFix"
 include(":app")
  
