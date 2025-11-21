@@ -7,6 +7,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.spotfix.android.model.Detection
+import com.spotfix.android.ui.screen.AdviceScreen
+import com.spotfix.android.ui.screen.CameraScreen
+import com.spotfix.android.ui.screen.ResultScreen
+import com.spotfix.android.ui.screen.SplashScreen
+import com.spotfix.android.viewmodel.CameraViewModel
 
 /**
  * Navigation routes for SpotFix app
@@ -24,7 +30,7 @@ sealed class Screen(val route: String) {
 @Composable
 fun SpotFixNavHost(
     navController: NavHostController,
-    sharedViewModel: SharedViewModel = viewModel()
+    cameraViewModel: CameraViewModel = viewModel()
 ) {
     NavHost(
         navController = navController,
@@ -43,7 +49,7 @@ fun SpotFixNavHost(
         composable(Screen.Camera.route) {
             CameraScreen(
                 onCapture = { bitmap, detections ->
-                    sharedViewModel.setCapturedData(bitmap, detections)
+                    cameraViewModel.setCapturedData(bitmap, detections)
                     navController.navigate(Screen.Result.route)
                 }
             )
@@ -51,7 +57,7 @@ fun SpotFixNavHost(
 
         composable(Screen.Result.route) {
             ResultScreen(
-                viewModel = sharedViewModel,
+                viewModel = cameraViewModel,
                 onBack = { navController.popBackStack() },
                 onGetAdvice = { navController.navigate(Screen.Advice.route) }
             )
@@ -59,7 +65,7 @@ fun SpotFixNavHost(
 
         composable(Screen.Advice.route) {
             AdviceScreen(
-                viewModel = sharedViewModel,
+                viewModel = cameraViewModel,
                 onBack = { navController.popBackStack() }
             )
         }

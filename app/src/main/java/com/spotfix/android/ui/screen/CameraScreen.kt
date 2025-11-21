@@ -1,5 +1,5 @@
 // CameraScreen.kt
-package com.spotfix.android
+package com.spotfix.android.ui.screen
 
 import android.Manifest
 import android.graphics.Bitmap
@@ -42,6 +42,10 @@ import android.graphics.Paint
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.text.style.TextAlign
+import com.spotfix.android.model.Detection
+import com.spotfix.android.utils.EfficientDetDetector
+import com.spotfix.android.utils.SpotFixAnalyzer
+import com.spotfix.android.utils.uriToBitmap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

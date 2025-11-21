@@ -1,23 +1,17 @@
-package com.spotfix.android
+package com.spotfix.android.viewmodel
 
 import android.graphics.Bitmap
 import androidx.lifecycle.ViewModel
+import com.spotfix.android.model.CapturedData
+import com.spotfix.android.model.Detection
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 /**
- * Data class to hold captured image and detections
+ * CameraViewModel to share captured data across screens
  */
-data class CapturedData(
-    val bitmap: Bitmap,
-    val detections: List<Detection>
-)
-
-/**
- * SharedViewModel to share captured data across screens
- */
-class SharedViewModel : ViewModel() {
+class CameraViewModel : ViewModel() {
     private val _capturedData = MutableStateFlow<CapturedData?>(null)
     val capturedData: StateFlow<CapturedData?> = _capturedData.asStateFlow()
 

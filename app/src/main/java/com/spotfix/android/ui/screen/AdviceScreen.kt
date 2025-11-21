@@ -1,4 +1,4 @@
-package com.spotfix.android
+package com.spotfix.android.ui.screen
 
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -19,12 +19,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import android.graphics.RectF
+import com.spotfix.android.model.Detection
+import com.spotfix.android.model.RepairAdvice
 import com.spotfix.android.ui.theme.SpotFixTheme
+import com.spotfix.android.utils.shareText
+import com.spotfix.android.viewmodel.CameraViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AdviceScreen(
-    viewModel: SharedViewModel,
+    viewModel: CameraViewModel,
     onBack: () -> Unit
 ) {
     val context = LocalContext.current
@@ -309,15 +313,6 @@ fun AdviceCard(advice: RepairAdvice) {
         }
     }
 }
-
-/**
- * Data class for repair advice
- */
-data class RepairAdvice(
-    val title: String,
-    val description: String,
-    val steps: List<String>
-)
 
 /**
  * Generate professional advice based on detected objects
