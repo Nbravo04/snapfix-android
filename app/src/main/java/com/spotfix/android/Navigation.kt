@@ -1,4 +1,4 @@
-package com.snapfix.android
+package com.spotfix.android
 
 import android.graphics.Bitmap
 import androidx.compose.runtime.Composable
@@ -9,7 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 
 /**
- * Navigation routes for SnapFix app
+ * Navigation routes for SpotFix app
  */
 sealed class Screen(val route: String) {
     object Splash : Screen("splash")
@@ -19,10 +19,10 @@ sealed class Screen(val route: String) {
 }
 
 /**
- * Main navigation host for SnapFix
+ * Main navigation host for SpotFix
  */
 @Composable
-fun SnapFixNavHost(
+fun SpotFixNavHost(
     navController: NavHostController,
     sharedViewModel: SharedViewModel = viewModel()
 ) {

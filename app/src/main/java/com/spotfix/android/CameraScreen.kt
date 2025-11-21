@@ -1,5 +1,5 @@
 // CameraScreen.kt
-package com.snapfix.android
+package com.spotfix.android
 
 import android.Manifest
 import android.graphics.Bitmap
@@ -165,7 +165,7 @@ fun CameraScreen(
 
                     // Description
                     Text(
-                        text = "SnapFix needs camera access to detect objects in real-time and help you diagnose home repair issues.",
+                        text = "SpotFix needs camera access to detect objects in real-time and help you diagnose home repair issues.",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         textAlign = TextAlign.Center
@@ -211,7 +211,7 @@ fun CameraScreen(
                         .also {
                             it.setAnalyzer(
                                 ContextCompat.getMainExecutor(context),
-                                SnapFixAnalyzer(context) { results, width, height ->
+                                SpotFixAnalyzer(context) { results, width, height ->
                                     detections = results
                                     imageWidth = width.toFloat()
                                     imageHeight = height.toFloat()
@@ -278,7 +278,7 @@ fun CameraScreen(
                 )
             ) {
                 Text(
-                    text = "SnapFix · Live Detection",
+                    text = "SpotFix · Live Detection",
                     style = MaterialTheme.typography.titleMedium,
                     color = Color.White,
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)

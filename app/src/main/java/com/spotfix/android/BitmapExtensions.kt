@@ -1,5 +1,5 @@
 // BitmapExtensions.kt
-package com.snapfix.android
+package com.spotfix.android
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory

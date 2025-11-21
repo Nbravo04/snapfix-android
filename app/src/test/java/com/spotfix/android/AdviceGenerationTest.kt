@@ -1,4 +1,4 @@
-package com.snapfix.android
+package com.spotfix.android
 
 import android.graphics.RectF
 import org.junit.Assert.*

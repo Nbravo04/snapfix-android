@@ -1,4 +1,4 @@
-package com.snapfix.android
+package com.spotfix.android
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -18,7 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
-import com.snapfix.android.ui.theme.SnapFixTheme
+import com.spotfix.android.ui.theme.SpotFixTheme
 import kotlinx.coroutines.delay
 
 @Composable
@@ -53,8 +53,8 @@ fun SplashScreen(
         ) {
             // Logo
             Image(
-                painter = painterResource(id = R.drawable.snapfix_logo),
-                contentDescription = "SnapFix Logo",
+                painter = painterResource(id = R.drawable.spotfix_logo),
+                contentDescription = "SpotFix Logo",
                 modifier = Modifier.size(200.dp)
             )
 
@@ -62,7 +62,7 @@ fun SplashScreen(
 
             // App name with modern styling
             Text(
-                text = "Snap",
+                text = "Spot",
                 fontSize = 42.sp,
                 fontWeight = FontWeight.Light,
                 color = Color(0xFF1976D2),
@@ -81,7 +81,7 @@ fun SplashScreen(
 
             // Tagline
             Text(
-                text = "Point, Snap, Fix",
+                text = "Spot, Scan, Fix",
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Normal,
                 color = Color(0xFF546E7A),
@@ -95,7 +95,7 @@ fun SplashScreen(
 @Preview(name = "Light Mode", showBackground = true)
 @Composable
 private fun SplashScreenPreviewLight() {
-    SnapFixTheme(darkTheme = false) {
+    SpotFixTheme(darkTheme = false) {
         // Static preview without animation
         Box(
             modifier = Modifier
@@ -110,15 +110,15 @@ private fun SplashScreenPreviewLight() {
             ) {
                 // Logo
                 Image(
-                    painter = painterResource(id = R.drawable.snapfix_logo),
-                    contentDescription = "SnapFix Logo",
+                    painter = painterResource(id = R.drawable.spotfix_logo),
+                    contentDescription = "SpotFix Logo",
                     modifier = Modifier.size(200.dp)
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))
 
                 Text(
-                    text = "Snap",
+                    text = "Spot",
                     fontSize = 42.sp,
                     fontWeight = FontWeight.Light,
                     color = Color(0xFF1976D2),
@@ -136,7 +136,7 @@ private fun SplashScreenPreviewLight() {
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
-                    text = "Point, Snap, Fix",
+                    text = "Spot, Scan, Fix",
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Normal,
                     color = Color(0xFF546E7A),
@@ -151,7 +151,7 @@ private fun SplashScreenPreviewLight() {
 @Preview(name = "Dark Mode", showBackground = true)
 @Composable
 private fun SplashScreenPreviewDark() {
-    SnapFixTheme(darkTheme = true) {
+    SpotFixTheme(darkTheme = true) {
         // Static preview without animation - dark theme
         Box(
             modifier = Modifier
@@ -166,15 +166,15 @@ private fun SplashScreenPreviewDark() {
             ) {
                 // Logo
                 Image(
-                    painter = painterResource(id = R.drawable.snapfix_logo),
-                    contentDescription = "SnapFix Logo",
+                    painter = painterResource(id = R.drawable.spotfix_logo),
+                    contentDescription = "SpotFix Logo",
                     modifier = Modifier.size(200.dp)
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))
 
                 Text(
-                    text = "Snap",
+                    text = "Spot",
                     fontSize = 42.sp,
                     fontWeight = FontWeight.Light,
                     color = Color(0xFF90CAF9),
@@ -192,7 +192,7 @@ private fun SplashScreenPreviewDark() {
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
-                    text = "Point, Snap, Fix",
+                    text = "Spot, Scan, Fix",
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Normal,
                     color = Color(0xFFB0BEC5),

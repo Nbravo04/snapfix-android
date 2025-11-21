@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.snapfix.android"
+    namespace = "com.spotfix.android"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.snapfix.android"
+        applicationId = "com.spotfix.android"
         minSdk = 24
         targetSdk = 36
         versionCode = 1

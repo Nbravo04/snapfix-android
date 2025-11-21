@@ -1,5 +1,5 @@
 // EfficientDetDetector.kt — EfficientDet Lite0 (ACTUALLY WORKS!)
-package com.snapfix.android
+package com.spotfix.android
 
 import android.content.Context
 import android.graphics.Bitmap

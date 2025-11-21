@@ -1,4 +1,4 @@
-package com.snapfix.android
+package com.spotfix.android
 
 import org.junit.Test
 

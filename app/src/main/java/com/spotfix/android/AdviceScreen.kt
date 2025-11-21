@@ -1,4 +1,4 @@
-package com.snapfix.android
+package com.spotfix.android
 
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -19,7 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import android.graphics.RectF
-import com.snapfix.android.ui.theme.SnapFixTheme
+import com.spotfix.android.ui.theme.SpotFixTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -54,7 +54,7 @@ fun AdviceScreen(
         // Generate full text for sharing/copying
         val fullAdviceText = remember(adviceList, selectedDetection) {
             buildString {
-                appendLine("🔧 SNAPFIX REPAIR ADVICE")
+                appendLine("🔧 SPOTFIX REPAIR ADVICE")
                 appendLine("━━━━━━━━━━━━━━━━━━━━")
                 appendLine()
                 selectedDetection?.let { detection ->
@@ -91,7 +91,7 @@ fun AdviceScreen(
                         // Copy button
                         IconButton(onClick = {
                             val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                            val clip = ClipData.newPlainText("SnapFix Advice", fullAdviceText)
+                            val clip = ClipData.newPlainText("SpotFix Advice", fullAdviceText)
                             clipboard.setPrimaryClip(clip)
                             Toast.makeText(context, "Advice copied to clipboard", Toast.LENGTH_SHORT).show()
                         }) {
@@ -100,7 +100,7 @@ fun AdviceScreen(
 
                         // Share button
                         IconButton(onClick = {
-                            context.shareText(fullAdviceText, "Share SnapFix Advice")
+                            context.shareText(fullAdviceText, "Share SpotFix Advice")
                         }) {
                             Icon(Icons.Default.Share, "Share")
                         }
@@ -490,7 +490,7 @@ private val sampleAdvice = RepairAdvice(
 @Preview(name = "Advice Card - Light", showBackground = true)
 @Composable
 private fun AdviceCardPreviewLight() {
-    SnapFixTheme(darkTheme = false) {
+    SpotFixTheme(darkTheme = false) {
         AdviceCard(advice = sampleAdvice)
     }
 }
@@ -498,7 +498,7 @@ private fun AdviceCardPreviewLight() {
 @Preview(name = "Advice Card - Dark", showBackground = true)
 @Composable
 private fun AdviceCardPreviewDark() {
-    SnapFixTheme(darkTheme = true) {
+    SpotFixTheme(darkTheme = true) {
         AdviceCard(advice = sampleAdvice)
     }
 }
@@ -506,7 +506,7 @@ private fun AdviceCardPreviewDark() {
 @Preview(name = "Advice Screen - Light", showBackground = true)
 @Composable
 private fun AdviceScreenPreviewLight() {
-    SnapFixTheme(darkTheme = false) {
+    SpotFixTheme(darkTheme = false) {
         val adviceList = generateAdvice(sampleAdviceDetections)
         LazyColumn(
             modifier = Modifier
@@ -564,7 +564,7 @@ private fun AdviceScreenPreviewLight() {
 @Preview(name = "Advice Screen - Dark", showBackground = true)
 @Composable
 private fun AdviceScreenPreviewDark() {
-    SnapFixTheme(darkTheme = true) {
+    SpotFixTheme(darkTheme = true) {
         val adviceList = generateAdvice(sampleAdviceDetections)
         LazyColumn(
             modifier = Modifier
