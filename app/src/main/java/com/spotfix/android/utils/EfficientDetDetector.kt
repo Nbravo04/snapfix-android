@@ -1,10 +1,11 @@
 // EfficientDetDetector.kt — EfficientDet Lite0 (ACTUALLY WORKS!)
-package com.spotfix.android
+package com.spotfix.android.utils
 
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.RectF
 import android.util.Log
+import com.spotfix.android.model.Detection
 import org.tensorflow.lite.DataType
 import org.tensorflow.lite.Interpreter
 import org.tensorflow.lite.support.image.TensorImage
@@ -13,12 +14,6 @@ import java.nio.MappedByteBuffer
 import java.nio.channels.FileChannel
 
 private const val TAG = "EfficientDetDetector"
-
-data class Detection(
-    val boundingBox: RectF,
-    val label: String,
-    val score: Float
-)
 
 class EfficientDetDetector(private val context: Context) {
 

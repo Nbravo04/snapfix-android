@@ -1,4 +1,4 @@
-package com.spotfix.android
+package com.spotfix.android.utils
 
 import android.content.Context
 import android.content.Intent
@@ -6,11 +6,12 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.ImageDecoder
 import android.graphics.Paint
-import android.graphics.RectF
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import androidx.core.content.FileProvider
+import com.spotfix.android.model.Detection
+import com.spotfix.android.model.DetectionInfo
 import java.io.File
 import java.io.FileOutputStream
 
@@ -137,14 +138,6 @@ fun Context.shareText(text: String, title: String = "Share") {
     }
     startActivity(Intent.createChooser(shareIntent, title))
 }
-
-/**
- * Maps detection labels to Material Icons and helpful descriptions
- */
-data class DetectionInfo(
-    val iconName: String,
-    val helpText: String
-)
 
 fun getDetectionInfo(label: String): DetectionInfo {
     return when (label.lowercase()) {

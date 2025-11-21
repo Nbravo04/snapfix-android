@@ -1,4 +1,4 @@
-package com.spotfix.android
+package com.spotfix.android.ui.screen
 
 import android.graphics.Bitmap
 import androidx.compose.foundation.Image
@@ -19,12 +19,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import android.graphics.RectF
+import com.spotfix.android.model.Detection
 import com.spotfix.android.ui.theme.SpotFixTheme
+import com.spotfix.android.utils.drawDetections
+import com.spotfix.android.utils.getDetectionInfo
+import com.spotfix.android.utils.shareBitmap
+import com.spotfix.android.viewmodel.CameraViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ResultScreen(
-    viewModel: SharedViewModel,
+    viewModel: CameraViewModel,
     onBack: () -> Unit,
     onGetAdvice: () -> Unit
 ) {

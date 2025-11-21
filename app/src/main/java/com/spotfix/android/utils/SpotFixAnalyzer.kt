@@ -1,8 +1,9 @@
-package com.spotfix.android
+package com.spotfix.android.utils
 
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
 import android.content.Context
+import com.spotfix.android.model.Detection
 
 class SpotFixAnalyzer(
     private val context: Context,
