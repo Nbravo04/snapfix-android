@@ -14,8 +14,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -50,10 +54,18 @@ class MainActivity : ComponentActivity() {
                     val context = LocalContext.current
                     val scope = rememberCoroutineScope()
                     val cameraViewModel: CameraViewModel = viewModel()
-                    Log.d(TAG, "Creating EfficientDetDetector...")
-                    val detector = remember {
-                        EfficientDetDetector(context).also {
-                            Log.d(TAG, "EfficientDetDetector created, model loaded: ${it.isModelLoaded}")
+
+                    // Create detector lazily to avoid blocking startup
+                    var detector by remember { mutableStateOf<EfficientDetDetector?>(null) }
+                    LaunchedEffect(Unit) {
+                        try {
+                            Log.d(TAG, "Creating EfficientDetDetector in background...")
+                            detector = withContext(Dispatchers.Default) {
+                                EfficientDetDetector(context)
+                            }
+                            Log.d(TAG, "EfficientDetDetector created, model loaded: ${detector?.isModelLoaded}")
+                        } catch (e: Exception) {
+                            Log.e(TAG, "Failed to create detector", e)
                         }
                     }
 
@@ -64,12 +76,18 @@ class MainActivity : ComponentActivity() {
                         uri?.let {
                             scope.launch {
                                 try {
+                                    val currentDetector = detector
+                                    if (currentDetector == null) {
+                                        Toast.makeText(context, "Model still loading...", Toast.LENGTH_SHORT).show()
+                                        return@launch
+                                    }
+
                                     val bitmap = withContext(Dispatchers.IO) {
                                         context.uriToBitmap(it)
                                     } ?: throw Exception("Failed to load image")
 
                                     val detections = withContext(Dispatchers.Default) {
-                                        detector.detect(bitmap)
+                                        currentDetector.detect(bitmap)
                                     }
 
                                     cameraViewModel.setCapturedData(bitmap, detections)
