@@ -52,6 +52,7 @@ fun SpotFixNavHost(
 
         composable(Screen.Camera.route) {
             CameraScreen(
+                viewModel = cameraViewModel,
                 onCapture = { bitmap, detections ->
                     cameraViewModel.setCapturedData(bitmap, detections)
                     navController.navigate(Screen.Result.route)

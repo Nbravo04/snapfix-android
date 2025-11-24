@@ -121,7 +121,10 @@ class MainActivity : ComponentActivity() {
                                         }
                                     },
                                     onCameraClick = {
-                                        if (currentRoute != Screen.Camera.route) {
+                                        if (currentRoute == Screen.Camera.route) {
+                                            // Trigger capture when already on camera screen
+                                            cameraViewModel.requestCapture()
+                                        } else {
                                             navController.navigate(Screen.Camera.route) {
                                                 popUpTo(Screen.Camera.route) { inclusive = true }
                                             }

@@ -23,6 +23,7 @@ import androidx.compose.material.icons.filled.Camera
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -41,6 +42,7 @@ import androidx.compose.ui.text.style.TextAlign
 import com.spotfix.android.model.Detection
 import com.spotfix.android.utils.EfficientDetDetector
 import com.spotfix.android.utils.SpotFixAnalyzer
+import com.spotfix.android.viewmodel.CameraViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -48,6 +50,7 @@ import kotlin.coroutines.resumeWithException
 
 @Composable
 fun CameraScreen(
+    viewModel: CameraViewModel,
     onCapture: (Bitmap, List<Detection>) -> Unit
 ) {
     val context = LocalContext.current
@@ -84,6 +87,39 @@ fun CameraScreen(
         implementationMode = PreviewView.ImplementationMode.PERFORMANCE
         scaleType = PreviewView.ScaleType.FILL_CENTER
     } }
+
+    // Capture function
+    val performCapture: () -> Unit = {
+        if (!isCapturing && detections.isNotEmpty()) {
+            isCapturing = true
+            scope.launch {
+                try {
+                    val bitmap = withContext(Dispatchers.IO) {
+                        imageCapture.takePicture(ContextCompat.getMainExecutor(context))
+                    }
+
+                    val capturedDetections = withContext(Dispatchers.Default) {
+                        detector.detect(bitmap)
+                    }
+
+                    onCapture(bitmap, capturedDetections)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                } finally {
+                    isCapturing = false
+                }
+            }
+        }
+    }
+
+    // Observe capture requests from bottom nav
+    val captureRequested by viewModel.captureRequested.collectAsState()
+    LaunchedEffect(captureRequested) {
+        if (captureRequested) {
+            performCapture()
+            viewModel.clearCaptureRequest()
+        }
+    }
 
     // Show permission request UI if camera permission not granted
     if (!hasCameraPermission) {
@@ -274,31 +310,7 @@ fun CameraScreen(
 
                 // Big circular SNAP button
                 FilledIconButton(
-                    onClick = {
-                        if (!isCapturing) {
-                            isCapturing = true
-                            scope.launch {
-                                try {
-                                    val bitmap = withContext(Dispatchers.IO) {
-                                        // Capture high-res frame from ImageCapture
-                                        imageCapture.takePicture(ContextCompat.getMainExecutor(context))
-                                    }
-
-                                    // Run detection on captured bitmap
-                                    val capturedDetections = withContext(Dispatchers.Default) {
-                                        detector.detect(bitmap)
-                                    }
-
-                                    // Navigate to result screen
-                                    onCapture(bitmap, capturedDetections)
-                                } catch (e: Exception) {
-                                    e.printStackTrace()
-                                } finally {
-                                    isCapturing = false
-                                }
-                            }
-                        }
-                    },
+                    onClick = { performCapture() },
                     enabled = !isCapturing && detections.isNotEmpty(),
                     modifier = Modifier
                         .size(80.dp)
