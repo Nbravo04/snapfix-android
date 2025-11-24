@@ -19,11 +19,12 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Camera
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.PhotoLibrary
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -42,7 +43,6 @@ import androidx.compose.ui.text.style.TextAlign
 import com.spotfix.android.model.Detection
 import com.spotfix.android.utils.EfficientDetDetector
 import com.spotfix.android.utils.SpotFixAnalyzer
-import com.spotfix.android.viewmodel.CameraViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -50,8 +50,9 @@ import kotlin.coroutines.resumeWithException
 
 @Composable
 fun CameraScreen(
-    viewModel: CameraViewModel,
-    onCapture: (Bitmap, List<Detection>) -> Unit
+    onCapture: (Bitmap, List<Detection>) -> Unit,
+    onGalleryClick: () -> Unit,
+    onMaintenanceClick: () -> Unit
 ) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -109,15 +110,6 @@ fun CameraScreen(
                     isCapturing = false
                 }
             }
-        }
-    }
-
-    // Observe capture requests from bottom nav
-    val captureRequested by viewModel.captureRequested.collectAsState()
-    LaunchedEffect(captureRequested) {
-        if (captureRequested) {
-            performCapture()
-            viewModel.clearCaptureRequest()
         }
     }
 
@@ -308,41 +300,82 @@ fun CameraScreen(
                     Spacer(modifier = Modifier.height(16.dp))
                 }
 
-                // Big circular SNAP button
-                FilledIconButton(
-                    onClick = { performCapture() },
-                    enabled = !isCapturing && detections.isNotEmpty(),
-                    modifier = Modifier
-                        .size(80.dp)
-                        .border(4.dp, Color.White, CircleShape),
-                    colors = IconButtonDefaults.filledIconButtonColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
-                    )
+                // Button row: Gallery - SNAP - Maintenance
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    if (isCapturing) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.size(32.dp),
-                            color = Color.White,
-                            strokeWidth = 3.dp
+                    // Gallery button (left)
+                    FilledIconButton(
+                        onClick = onGalleryClick,
+                        modifier = Modifier.size(56.dp),
+                        colors = IconButtonDefaults.filledIconButtonColors(
+                            containerColor = MaterialTheme.colorScheme.tertiaryContainer
                         )
-                    } else {
+                    ) {
                         Icon(
-                            imageVector = Icons.Default.Camera,
-                            contentDescription = "Capture",
-                            tint = Color.White,
-                            modifier = Modifier.size(40.dp)
+                            imageVector = Icons.Default.PhotoLibrary,
+                            contentDescription = "Gallery",
+                            tint = MaterialTheme.colorScheme.onTertiaryContainer,
+                            modifier = Modifier.size(28.dp)
+                        )
+                    }
+
+                    // Big circular SNAP button (center)
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        FilledIconButton(
+                            onClick = { performCapture() },
+                            enabled = !isCapturing && detections.isNotEmpty(),
+                            modifier = Modifier
+                                .size(80.dp)
+                                .border(4.dp, Color.White, CircleShape),
+                            colors = IconButtonDefaults.filledIconButtonColors(
+                                containerColor = MaterialTheme.colorScheme.primary,
+                                disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
+                            )
+                        ) {
+                            if (isCapturing) {
+                                CircularProgressIndicator(
+                                    modifier = Modifier.size(32.dp),
+                                    color = Color.White,
+                                    strokeWidth = 3.dp
+                                )
+                            } else {
+                                Icon(
+                                    imageVector = Icons.Default.Camera,
+                                    contentDescription = "Capture",
+                                    tint = Color.White,
+                                    modifier = Modifier.size(40.dp)
+                                )
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        Text(
+                            text = if (detections.isEmpty()) "Point at object" else "SNAP",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = if (detections.isEmpty()) Color.White.copy(alpha = 0.5f) else Color.White
+                        )
+                    }
+
+                    // Maintenance button (right)
+                    FilledIconButton(
+                        onClick = onMaintenanceClick,
+                        modifier = Modifier.size(56.dp),
+                        colors = IconButtonDefaults.filledIconButtonColors(
+                            containerColor = MaterialTheme.colorScheme.secondaryContainer
+                        )
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Build,
+                            contentDescription = "Maintenance",
+                            tint = MaterialTheme.colorScheme.onSecondaryContainer,
+                            modifier = Modifier.size(28.dp)
                         )
                     }
                 }
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Text(
-                    text = if (detections.isEmpty()) "Point at object" else "SNAP",
-                    style = MaterialTheme.typography.titleMedium,
-                    color = if (detections.isEmpty()) Color.White.copy(alpha = 0.5f) else Color.White
-                )
             }
         }
 

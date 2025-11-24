@@ -33,6 +33,7 @@ sealed class Screen(val route: String) {
 fun SpotFixNavHost(
     navController: NavHostController,
     cameraViewModel: CameraViewModel = viewModel(),
+    onGalleryClick: () -> Unit = {},
     modifier: androidx.compose.ui.Modifier = androidx.compose.ui.Modifier
 ) {
     NavHost(
@@ -52,10 +53,13 @@ fun SpotFixNavHost(
 
         composable(Screen.Camera.route) {
             CameraScreen(
-                viewModel = cameraViewModel,
                 onCapture = { bitmap, detections ->
                     cameraViewModel.setCapturedData(bitmap, detections)
                     navController.navigate(Screen.Result.route)
+                },
+                onGalleryClick = onGalleryClick,
+                onMaintenanceClick = {
+                    navController.navigate(Screen.Maintenance.route)
                 }
             )
         }
