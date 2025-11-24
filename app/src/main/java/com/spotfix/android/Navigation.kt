@@ -10,6 +10,7 @@ import androidx.navigation.compose.composable
 import com.spotfix.android.model.Detection
 import com.spotfix.android.ui.screen.AdviceScreen
 import com.spotfix.android.ui.screen.CameraScreen
+import com.spotfix.android.ui.screen.MaintenanceScreen
 import com.spotfix.android.ui.screen.ResultScreen
 import com.spotfix.android.ui.screen.SplashScreen
 import com.spotfix.android.viewmodel.CameraViewModel
@@ -22,6 +23,7 @@ sealed class Screen(val route: String) {
     object Camera : Screen("camera")
     object Result : Screen("result")
     object Advice : Screen("advice")
+    object Maintenance : Screen("maintenance")
 }
 
 /**
@@ -30,11 +32,13 @@ sealed class Screen(val route: String) {
 @Composable
 fun SpotFixNavHost(
     navController: NavHostController,
-    cameraViewModel: CameraViewModel = viewModel()
+    cameraViewModel: CameraViewModel = viewModel(),
+    modifier: androidx.compose.ui.Modifier = androidx.compose.ui.Modifier
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Splash.route
+        startDestination = Screen.Splash.route,
+        modifier = modifier
     ) {
         composable(Screen.Splash.route) {
             SplashScreen(
@@ -68,6 +72,10 @@ fun SpotFixNavHost(
                 viewModel = cameraViewModel,
                 onBack = { navController.popBackStack() }
             )
+        }
+
+        composable(Screen.Maintenance.route) {
+            MaintenanceScreen()
         }
     }
 }

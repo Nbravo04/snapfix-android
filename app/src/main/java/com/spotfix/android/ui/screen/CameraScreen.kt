@@ -3,12 +3,7 @@ package com.spotfix.android.ui.screen
 
 import android.Manifest
 import android.graphics.Bitmap
-import android.net.Uri
-import android.os.Build
 import android.widget.Toast
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageCapture
@@ -24,7 +19,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Camera
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.PhotoLibrary
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -45,7 +39,6 @@ import androidx.compose.ui.text.style.TextAlign
 import com.spotfix.android.model.Detection
 import com.spotfix.android.utils.EfficientDetDetector
 import com.spotfix.android.utils.SpotFixAnalyzer
-import com.spotfix.android.utils.uriToBitmap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -84,42 +77,6 @@ fun CameraScreen(
 
     val imageCapture = remember { ImageCapture.Builder().build() }
     val detector = remember { EfficientDetDetector(context) }
-
-    // Gallery picker launcher
-    val photoPickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickVisualMedia()
-    ) { uri: Uri? ->
-        uri?.let {
-            scope.launch {
-                try {
-                    val bitmap = withContext(Dispatchers.IO) {
-                        context.uriToBitmap(it)
-                    } ?: throw Exception("Failed to load image")
-
-                    val capturedDetections = withContext(Dispatchers.Default) {
-                        detector.detect(bitmap)
-                    }
-
-                    onCapture(bitmap, capturedDetections)
-                } catch (e: Exception) {
-                    Toast.makeText(context, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-    }
-
-    // Permission launcher for gallery access
-    val permissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission()
-    ) { isGranted ->
-        if (isGranted) {
-            photoPickerLauncher.launch(
-                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-            )
-        } else {
-            Toast.makeText(context, "Permission required to access gallery", Toast.LENGTH_SHORT).show()
-        }
-    }
 
     val previewView = remember { PreviewView(context).apply {
         implementationMode = PreviewView.ImplementationMode.PERFORMANCE
@@ -375,43 +332,6 @@ fun CameraScreen(
             }
         }
 
-        // Bottom-left gallery button
-        FloatingActionButton(
-            onClick = {
-                val hasPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    context.checkSelfPermission(Manifest.permission.READ_MEDIA_IMAGES) ==
-                        android.content.pm.PackageManager.PERMISSION_GRANTED
-                } else {
-                    context.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) ==
-                        android.content.pm.PackageManager.PERMISSION_GRANTED
-                }
-
-                if (hasPermission) {
-                    photoPickerLauncher.launch(
-                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                    )
-                } else {
-                    permissionLauncher.launch(
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                            Manifest.permission.READ_MEDIA_IMAGES
-                        } else {
-                            Manifest.permission.READ_EXTERNAL_STORAGE
-                        }
-                    )
-                }
-            },
-            modifier = Modifier
-                .align(Alignment.BottomStart)
-                .padding(16.dp),
-            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-            contentColor = MaterialTheme.colorScheme.onTertiaryContainer
-        ) {
-            Icon(
-                imageVector = Icons.Default.PhotoLibrary,
-                contentDescription = "Pick from gallery",
-                modifier = Modifier.size(28.dp)
-            )
-        }
     }
 }
 
