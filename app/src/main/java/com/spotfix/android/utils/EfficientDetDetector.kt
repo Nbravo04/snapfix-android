@@ -17,6 +17,31 @@ private const val TAG = "EfficientDetDetector"
 
 class EfficientDetDetector(private val context: Context) {
 
+    companion object {
+        /** Set to true to enable verbose logging */
+        var DEBUG = true
+
+        /**
+         * Check if a detector instance has its model loaded successfully.
+         * Useful for UI to show appropriate error states.
+         */
+        fun isModelAvailable(detector: EfficientDetDetector): Boolean {
+            return detector.isModelLoaded
+        }
+
+        private fun log(message: String) {
+            if (DEBUG) Log.d(TAG, message)
+        }
+
+        private fun logError(message: String, e: Exception? = null) {
+            if (e != null) {
+                Log.e(TAG, message, e)
+            } else {
+                Log.e(TAG, message)
+            }
+        }
+    }
+
     private var interpreter: Interpreter? = null
     private val threshold = 0.5f  // Confidence threshold
 
@@ -41,42 +66,33 @@ class EfficientDetDetector(private val context: Context) {
 
     init {
         try {
-            Log.d(TAG, "Loading EfficientDet Lite0 model...")
+            log("Loading EfficientDet Lite0 model...")
             val model = loadModelFile()
+            log("Model file loaded, creating interpreter...")
             interpreter = Interpreter(model)
             isModelLoaded = true
-            Log.d(TAG, "Model loaded successfully")
+            log("Model loaded successfully")
 
             // Log all input/output tensors
             interpreter?.let { interp ->
                 val numInputs = interp.inputTensorCount
                 val numOutputs = interp.outputTensorCount
-                Log.d(TAG, "Number of inputs: $numInputs, outputs: $numOutputs")
+                log("Number of inputs: $numInputs, outputs: $numOutputs")
 
                 for (i in 0 until numInputs) {
                     val tensor = interp.getInputTensor(i)
-                    Log.d(TAG, "Input $i: ${tensor.shape().contentToString()}, type: ${tensor.dataType()}")
+                    log("Input $i: ${tensor.shape().contentToString()}, type: ${tensor.dataType()}")
                 }
 
                 for (i in 0 until numOutputs) {
                     val tensor = interp.getOutputTensor(i)
-                    Log.d(TAG, "Output $i: ${tensor.shape().contentToString()}, type: ${tensor.dataType()}")
+                    log("Output $i: ${tensor.shape().contentToString()}, type: ${tensor.dataType()}")
                 }
             }
         } catch (e: Exception) {
-            Log.e(TAG, "Failed to load EfficientDet model", e)
+            logError("Failed to load EfficientDet model", e)
             isModelLoaded = false
             interpreter = null
-        }
-    }
-
-    companion object {
-        /**
-         * Check if a detector instance has its model loaded successfully.
-         * Useful for UI to show appropriate error states.
-         */
-        fun isModelAvailable(detector: EfficientDetDetector): Boolean {
-            return detector.isModelLoaded
         }
     }
 
@@ -94,7 +110,7 @@ class EfficientDetDetector(private val context: Context) {
             return emptyList()
         }
 
-        Log.d(TAG, "Running inference on ${originalBitmap.width}x${originalBitmap.height}")
+        log("Running inference on ${originalBitmap.width}x${originalBitmap.height}")
 
         // EfficientDet expects 320x320 input
         val resized = Bitmap.createScaledBitmap(originalBitmap, 320, 320, true)
@@ -124,16 +140,16 @@ class EfficientDetDetector(private val context: Context) {
 
         try {
             interpreter?.runForMultipleInputsOutputs(arrayOf(input), outputs)
-            Log.d(TAG, "Inference succeeded")
+            log("Inference succeeded")
         } catch (e: Exception) {
-            Log.e(TAG, "Inference failed", e)
+            logError("Inference failed", e)
             return emptyList()
         }
 
         val detections = mutableListOf<Detection>()
         val numValidDetections = numDetections[0].toInt().coerceAtMost(25)
 
-        Log.d(TAG, "Number of detections from model: $numValidDetections")
+        log("Number of detections from model: $numValidDetections")
 
         for (i in 0 until numValidDetections) {
             val score = outputScores[0][i]
@@ -169,11 +185,11 @@ class EfficientDetDetector(private val context: Context) {
 
             // Debug first few detections
             if (detections.size <= 3) {
-                Log.d(TAG, "Detection ${detections.size}: $label (${(score * 100).toInt()}%) at [$left, $top, $right, $bottom]")
+                log("Detection ${detections.size}: $label (${(score * 100).toInt()}%) at [$left, $top, $right, $bottom]")
             }
         }
 
-        Log.d(TAG, "Found ${detections.size} valid detections")
+        log("Found ${detections.size} valid detections")
         return detections
     }
 

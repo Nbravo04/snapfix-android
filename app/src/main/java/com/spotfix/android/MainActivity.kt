@@ -4,6 +4,7 @@ import android.Manifest
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -28,19 +29,33 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class MainActivity : ComponentActivity() {
+
+    companion object {
+        private const val TAG = "MainActivity"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d(TAG, "onCreate started")
+
         setContent {
+            Log.d(TAG, "setContent started")
             SpotFixTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    Log.d(TAG, "Surface composable started")
                     val navController = rememberNavController()
                     val context = LocalContext.current
                     val scope = rememberCoroutineScope()
                     val cameraViewModel: CameraViewModel = viewModel()
-                    val detector = remember { EfficientDetDetector(context) }
+                    Log.d(TAG, "Creating EfficientDetDetector...")
+                    val detector = remember {
+                        EfficientDetDetector(context).also {
+                            Log.d(TAG, "EfficientDetDetector created, model loaded: ${it.isModelLoaded}")
+                        }
+                    }
 
                     // Gallery picker launcher
                     val photoPickerLauncher = rememberLauncherForActivityResult(
