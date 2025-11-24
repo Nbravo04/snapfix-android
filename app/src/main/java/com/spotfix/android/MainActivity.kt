@@ -97,6 +97,7 @@ class MainActivity : ComponentActivity() {
                     SpotFixNavHost(
                         navController = navController,
                         cameraViewModel = cameraViewModel,
+                        detector = detector,
                         onGalleryClick = {
                             val hasPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                                 context.checkSelfPermission(Manifest.permission.READ_MEDIA_IMAGES) ==

@@ -34,6 +34,7 @@ fun SpotFixNavHost(
     navController: NavHostController,
     cameraViewModel: CameraViewModel = viewModel(),
     onGalleryClick: () -> Unit = {},
+    detector: com.spotfix.android.utils.EfficientDetDetector? = null,
     modifier: androidx.compose.ui.Modifier = androidx.compose.ui.Modifier
 ) {
     NavHost(
@@ -60,7 +61,8 @@ fun SpotFixNavHost(
                 onGalleryClick = onGalleryClick,
                 onMaintenanceClick = {
                     navController.navigate(Screen.Maintenance.route)
-                }
+                },
+                sharedDetector = detector
             )
         }
 

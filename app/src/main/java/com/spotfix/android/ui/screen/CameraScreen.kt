@@ -53,7 +53,8 @@ import kotlin.coroutines.resumeWithException
 fun CameraScreen(
     onCapture: (Bitmap, List<Detection>) -> Unit,
     onGalleryClick: () -> Unit,
-    onMaintenanceClick: () -> Unit
+    onMaintenanceClick: () -> Unit,
+    sharedDetector: EfficientDetDetector? = null
 ) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -83,7 +84,8 @@ fun CameraScreen(
     }
 
     val imageCapture = remember { ImageCapture.Builder().build() }
-    val detector = remember { EfficientDetDetector(context) }
+    // Use shared detector if provided, otherwise create one
+    val detector = sharedDetector ?: remember { EfficientDetDetector(context) }
 
     val previewView = remember { PreviewView(context).apply {
         implementationMode = PreviewView.ImplementationMode.PERFORMANCE
@@ -221,7 +223,10 @@ fun CameraScreen(
 
         onDispose {
             cameraProvider?.unbindAll()
-            detector.close()
+            // Only close detector if we created it locally
+            if (sharedDetector == null) {
+                detector.close()
+            }
         }
     }
 
